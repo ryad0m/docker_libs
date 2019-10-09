@@ -14,7 +14,7 @@ RUN git clone https://github.com/tdlib/td.git
 RUN mkdir td/build
 WORKDIR td/build
 ENV CXXFLAGS="-stdlib=libc++"
-RUN CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake -DCMAKE_BUILD_TYPE=Release \
+RUN CC=/usr/bin/clang-6.0 CXX=/usr/bin/clang++-6.0 cmake -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_AR=/usr/bin/llvm-ar-6.0 -DCMAKE_NM=/usr/bin/llvm-nm-6.0 \
     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
 RUN cmake --build . --target prepare_cross_compiling
