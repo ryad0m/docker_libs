@@ -12,8 +12,7 @@ RUN apt-get update && apt-get upgrade -y && \
 RUN git clone https://github.com/tdlib/td.git
 RUN mkdir td/build
 WORKDIR td/build
-RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_AR=/usr/bin/llvm-ar-6.0 \
-    -DCMAKE_NM=/usr/bin/llvm-nm-6.0 -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
+RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local ..
 RUN cmake --build . --target prepare_cross_compiling
 RUN cd .. && php SplitSource.php
 RUN cmake --build . --target install
