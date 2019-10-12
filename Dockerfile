@@ -8,15 +8,12 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 
 # Building and installing tdlib.
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y make zlib1g-dev libssl-dev gperf php cmake gcc g++ git python3.7-dev nodejs \
-    clang-6.0 libc++abi-dev libc++-dev
+    apt-get install -y make zlib1g-dev libssl-dev gperf php cmake gcc g++ git python3.7-dev nodejs
 RUN git clone https://github.com/tdlib/td.git
 RUN mkdir td/build
 WORKDIR td/build
-ENV CXXFLAGS="-stdlib=libc++"
-RUN CC=/usr/bin/clang-6.0 CXX=/usr/bin/clang++-6.0 cmake -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_AR=/usr/bin/llvm-ar-6.0 -DCMAKE_NM=/usr/bin/llvm-nm-6.0 \
-    -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
+RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local -DCMAKE_AR=/usr/bin/llvm-ar-6.0 \
+    -DCMAKE_NM=/usr/bin/llvm-nm-6.0 -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
 RUN cmake --build . --target prepare_cross_compiling
 RUN cd .. && php SplitSource.php
 RUN cmake --build . --target install
