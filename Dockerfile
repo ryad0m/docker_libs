@@ -7,7 +7,10 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | sh -
 RUN add-apt-repository ppa:deadsnakes/ppa
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y make zlib1g-dev libssl-dev gperf php cmake gcc g++ git python3.7-dev nodejs
+    apt-get install -y make zlib1g-dev libssl-dev gperf php cmake gcc g++ git python3.7-dev nodejs pkg-config
+
+# Setting up python pkg-config.
+RUN ln -s /usr/lib/x86_64-linux-gnu/pkgconfig/python-3.7.pc /usr/lib/x86_64-linux-gnu/pkgconfig/python3.pc
 
 # Building and installing tdlib.
 RUN git clone https://github.com/tdlib/td.git
