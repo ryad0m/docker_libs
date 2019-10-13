@@ -1,26 +1,18 @@
-FROM ubuntu:18.04
+FROM alpine:3.10.2
 
-# Setting up repos
-RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime
-RUN apt-get update && apt-get upgrade -y && apt-get install -y curl software-properties-common wget git
-RUN curl -sL https://deb.nodesource.com/setup_12.x | sh -
-RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apk add --no-cache ca-certificates gperf alpine-sdk openssl-dev git cmake zlib-dev \
+    nodejs nodejs-npm musl-dev go python python-dev py-pip build-base 
 
-# Building and installing tdlib.
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y make zlib1g-dev libssl-dev gperf php cmake gcc g++ git python3.7-dev nodejs
-RUN git clone https://github.com/tdlib/td.git
-RUN mkdir td/build
-WORKDIR td/build
-RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local ..
-RUN cmake --build . --target prepare_cross_compiling
-RUN cd .. && php SplitSource.php
-RUN cmake --build . --target install
-WORKDIR ../..
+WORKDIR /tmp/_build_tdlib/
 
-# Installing golang.
-RUN wget https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.13.1.linux-amd64.tar.gz
-RUN mkdir /golang
-ENV GOPATH=/golang
-ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+RUN git clone https://github.com/tdlib/td.git /tmp/_build_tdlib/ --branch v1.5.0
+
+RUN mkdir build
+WORKDIR /tmp/_build_tdlib/build/
+
+RUN cmake -DCMAKE_BUILD_TYPE=Release ..
+RUN cmake --build .
+RUN make install
+
+
+nodejs nodejs-npm
