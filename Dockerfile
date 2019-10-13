@@ -1,7 +1,7 @@
 FROM alpine:3.10.2
 
 RUN apk add --no-cache --update ca-certificates gperf alpine-sdk openssl-dev git \
-    cmake zlib-dev linux-headers php php-ctype \
+    cmake zlib-dev linux-headers php php-ctype linux-headers \
     nodejs nodejs-npm musl-dev go python python-dev py-pip build-base alpine-sdk
 
 ENV GOPATH=/opt/go/ 
