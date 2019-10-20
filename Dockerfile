@@ -2,12 +2,11 @@ FROM ubuntu:18.04
 
 # Setting up repos
 RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime
-RUN apt-get update && apt-get upgrade -y && apt-get install -y curl software-properties-common wget git
-RUN curl -sL https://deb.nodesource.com/setup_12.x | sh -
+RUN apt-get update && apt-get upgrade -y && apt-get install -y software-properties-common wget git
 RUN add-apt-repository ppa:deadsnakes/ppa
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y make zlib1g-dev libssl-dev gperf php cmake gcc g++ git python3.7-dev nodejs pkg-config
+    apt-get install -y make zlib1g-dev libssl-dev gperf php cmake gcc g++ git python3.7-dev pkg-config
 
 # Setting up python pkg-config.
 RUN ln -s /usr/lib/x86_64-linux-gnu/pkgconfig/python-3.7.pc /usr/lib/x86_64-linux-gnu/pkgconfig/python3.pc
